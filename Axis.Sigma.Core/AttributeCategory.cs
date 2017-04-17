@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Axis.Sigma.Core
+﻿namespace Axis.Sigma.Core
 {
     public enum AttributeCategory
     {
+        /// <summary>
+        /// Represents attributes about the principal on who's behalf access is being granted
+        /// </summary>
         Subject,
-        Resource,
-        Action,
+
+        /// <summary>
+        /// Represents the intended ACTION to be performed on a specified RESOURCE
+        /// </summary>
+        Intent,
+
+        /// <summary>
+        /// Represents attributes of the CONTEXT/ENVIRONMENT within which the PRINCIPAL is trying to PERFORM an ACTION on a given RESOURCE
+        /// </summary>
         Environment
     }
 }

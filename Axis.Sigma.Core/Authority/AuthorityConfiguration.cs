@@ -1,12 +1,9 @@
 ﻿using static Axis.Luna.Extensions.ExceptionExtensions;
 
 using Axis.Sigma.Core.Policy;
-using Axis.Sigma.Core.Request;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Axis.Luna.Extensions;
 
 namespace Axis.Sigma.Core.Authority
 {
@@ -16,16 +13,6 @@ namespace Axis.Sigma.Core.Authority
 
         private List<IPolicyReader> _policyReaders = new List<IPolicyReader>();
         public IEnumerable<IPolicyReader> PolicyReaders => _policyReaders.ToArray();
-
-        //public RequestBuilder RequestBuilder { get; private set; }
-
-        //public AuthorityConfiguration(RequestBuilder requestBuilder)
-        //{
-        //    ThrowNullArguments(() => requestBuilder);
-
-        //    this.RootPolicyCombinationClause = DefaultClauses.GrantOnAll;
-        //    RequestBuilder = requestBuilder;
-        //}
 
         public AuthorityConfiguration()
         {
@@ -42,7 +29,7 @@ namespace Axis.Sigma.Core.Authority
         {
             ThrowNullArguments(() => readers);
 
-            readers.ToList().ForEach(r => AddPolicyReader(r));
+            readers.ForAll((_, r) => AddPolicyReader(r));
             return this;
         }
     }

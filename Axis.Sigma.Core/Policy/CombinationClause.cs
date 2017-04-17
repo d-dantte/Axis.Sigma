@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Axis.Sigma.Core.Policy
 {
@@ -15,7 +13,7 @@ namespace Axis.Sigma.Core.Policy
     }
     public abstract class AbstractCombinationClause: ICombinationClause
     {
-        public virtual string Name => this.GetType().Name;
+        public virtual string Name => GetType().Name;
 
         public abstract Effect Combine(IEnumerable<Effect> effects);
         public Effect Combine(params Effect[] effects) => Combine(effects?.AsEnumerable() ?? new Effect[0]);
