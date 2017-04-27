@@ -32,10 +32,8 @@ namespace Axis.Sigma.Core.Authority
 
         
         public Effect Authorize(IAuthorizationRequest request)
-        {
-            return (Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll)
-                   .Combine(Policies.Where(_p => _p.IsAuthRequestTarget?.Invoke(_p, request) ?? false)
-                                    .Select(_p => _p.Authorize(request)));                    
-        }
+        => (Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll)
+            .Combine(Policies.Where(_p => _p.IsAuthRequestTarget?.Invoke(_p, request) ?? false)
+                             .Select(_p => _p.Authorize(request)));       
     }
 }

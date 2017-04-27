@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute.cs" />
+    <Compile Include="IAttribute.cs" />
     <Compile Include="AttributeCategory.cs" />
     <Compile Include="Authority\AuthorityConfiguration.cs" />
     <Compile Include="Authority\PolicyAuthority.cs" />
