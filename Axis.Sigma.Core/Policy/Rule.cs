@@ -18,12 +18,12 @@ namespace Axis.Sigma.Core.Policy
            Effect.Grant :
            Effect.Deny;
 
-        private bool? Combine(bool? first, bool? second)
-        {
-            if (first == null) return second;
-            else if (second == null) return first;
-            else return first.Value && second.Value;
-        }
+        //private bool? Combine(bool? first, bool? second)
+        //{
+        //    if (first == null) return second;
+        //    else if (second == null) return first;
+        //    else return first.Value && second.Value;
+        //}
         #endregion
     }
 }

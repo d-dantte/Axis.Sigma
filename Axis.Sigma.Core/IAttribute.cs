@@ -1,4 +1,4 @@
-﻿using Axis.Luna;
+﻿using Axis.Luna.Utils;
 using System;
 
 namespace Axis.Sigma.Core
@@ -7,7 +7,7 @@ namespace Axis.Sigma.Core
     {
         AttributeCategory Category { get; }
 
-        IAttribute Copy(AttributeCategory category);
+        IAttribute Copy();
 
         V ResolveData<V>();
     }

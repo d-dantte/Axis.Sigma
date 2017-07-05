@@ -25,7 +25,7 @@ namespace Axis.Sigma.Core.Policy
     public class GrantOnAll : AbstractCombinationClause
     {
         public override Effect Combine(IEnumerable<Effect> effects)
-            => (effects ?? new Effect[0]).All(effect => effect == Effect.Grant) ? Effect.Grant : Effect.Deny;
+        => (effects ?? new Effect[0]).All(effect => effect == Effect.Grant) ? Effect.Grant : Effect.Deny;
     }
     #endregion
 
@@ -33,7 +33,7 @@ namespace Axis.Sigma.Core.Policy
     public class GrantOnAny : AbstractCombinationClause
     {
         public override Effect Combine(IEnumerable<Effect> effects) 
-            => (effects ?? new Effect[0]).Any(effect => effect == Effect.Grant) ? Effect.Grant : Effect.Deny;
+        => (effects ?? new Effect[0]).Any(effect => effect == Effect.Grant) ? Effect.Grant : Effect.Deny;
     }
     #endregion
 
@@ -43,7 +43,7 @@ namespace Axis.Sigma.Core.Policy
         public int MinimumGrantCount { get; set; }
 
         public override Effect Combine(IEnumerable<Effect> effects) 
-            => (effects ?? new Effect[0]).Count(effect => effect == Effect.Grant) >= Math.Abs(MinimumGrantCount) ? Effect.Grant : Effect.Deny;
+        => (effects ?? new Effect[0]).Count(effect => effect == Effect.Grant) >= Math.Abs(MinimumGrantCount) ? Effect.Grant : Effect.Deny;
     }
     #endregion
 
@@ -52,7 +52,7 @@ namespace Axis.Sigma.Core.Policy
     public class DenyOnAll : AbstractCombinationClause
     {
         public override Effect Combine(IEnumerable<Effect> effects) 
-            => (effects ?? new Effect[0]).All(effect => effect == Effect.Deny) ? Effect.Deny : Effect.Grant;
+        => (effects ?? new Effect[0]).All(effect => effect == Effect.Deny) ? Effect.Deny : Effect.Grant;
     }
     #endregion
 
@@ -60,7 +60,7 @@ namespace Axis.Sigma.Core.Policy
     public class DenyOnAny : AbstractCombinationClause
     {
         public override Effect Combine(IEnumerable<Effect> effects) 
-            => (effects ?? new Effect[0]).Any(effect => effect == Effect.Deny) ? Effect.Deny : Effect.Grant;
+        => (effects ?? new Effect[0]).Any(effect => effect == Effect.Deny) ? Effect.Deny : Effect.Grant;
     }
     #endregion
 
@@ -70,7 +70,7 @@ namespace Axis.Sigma.Core.Policy
         public int MinimumDenyCount { get; set; }
 
         public override Effect Combine(IEnumerable<Effect> effects) 
-            => (effects ?? new Effect[0]).Count(effect => effect == Effect.Deny) >= Math.Abs(MinimumDenyCount) ? Effect.Deny : Effect.Grant;
+        => (effects ?? new Effect[0]).Count(effect => effect == Effect.Deny) >= Math.Abs(MinimumDenyCount) ? Effect.Deny : Effect.Grant;
     }
     #endregion
 

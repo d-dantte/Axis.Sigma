@@ -1,4 +1,4 @@
-﻿using Axis.Luna;
+﻿using Axis.Luna.Operation;
 using System.Collections.Generic;
 
 namespace Axis.Sigma.Core.Policy
@@ -10,6 +10,6 @@ namespace Axis.Sigma.Core.Policy
 
     public interface IPolicyWriter
     {
-        Operation Persist(IEnumerable<Policy> policies);
+        IOperation Persist(IEnumerable<Policy> policies);
     }
 }

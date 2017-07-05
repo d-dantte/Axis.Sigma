@@ -29,7 +29,7 @@ namespace Axis.Sigma.Core.Authority
         {
             ThrowNullArguments(() => readers);
 
-            readers.ForAll((_, r) => AddPolicyReader(r));
+            readers.ForAll(_r => AddPolicyReader(_r));
             return this;
         }
     }
