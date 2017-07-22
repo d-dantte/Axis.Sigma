@@ -7,7 +7,7 @@ namespace Axis.Sigma.Core.Policy
 {
     public class Policy: ICombinable, IPolicyEnforcer
     {
-        public string Id { get; set; }
+        public string Code { get; set; }
         public string Title { get; set; }
 
         #region ITargetAware

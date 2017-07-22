@@ -17,6 +17,10 @@ namespace Axis.Sigma.Core.Authority
         public AuthorityConfiguration()
         {
         }
+        public AuthorityConfiguration(IEnumerable<IPolicyReader> readers)
+        {
+            AddPolicyReaders(readers?.ToArray() ?? new IPolicyReader[0]);
+        }
 
         public AuthorityConfiguration AddPolicyReader(IPolicyReader reader)
         {

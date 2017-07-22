@@ -4,6 +4,7 @@ using Axis.Sigma.Core.Policy;
 using Axis.Sigma.Core.Request;
 using System.Collections.Generic;
 using System.Linq;
+using Axis.Luna.Operation;
 
 namespace Axis.Sigma.Core.Authority
 {
@@ -26,14 +27,19 @@ namespace Axis.Sigma.Core.Authority
             ///Read and cache policy sets from all provided policy readers
             _policies = Configuration
                 .PolicyReaders
-                .Select(pr => new { source = pr, pset = pr.Policies().ToList() })
+                .Select(pr => new { source = pr, pset = pr.Policies().Resolve().ToList() })
                 .ToDictionary(spr => spr.source, spr => spr.pset);
         }
 
-        
-        public Effect Authorize(IAuthorizationRequest request)
-        => (Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll)
-            .Combine(Policies.Where(_p => _p.IsAuthRequestTarget?.Invoke(_p, request) ?? false)
-                             .Select(_p => _p.Authorize(request)));       
+
+        public IOperation Authorize(IAuthorizationRequest request)
+        => LazyOp.Try(() =>
+        {
+            var clause = Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll;
+
+            clause.Combine(Policies.Where(_p => _p.IsAuthRequestTarget?.Invoke(_p, request) ?? false)
+                                   .Select(_p => _p.Authorize(request)))
+                  .ThrowIf(Effect.Deny, "Access Denied");
+        });
     }
 }

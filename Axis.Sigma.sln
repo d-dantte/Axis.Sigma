@@ -4,12 +4,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{567709F3-63E3-45D3-AEDF-298461ABBE45}"
+	ProjectSection(SolutionItems) = preProject
+		Axis.Sigma.Core\Backlog.txt = Axis.Sigma.Core\Backlog.txt
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axis.Sigma.Core", "Axis.Sigma.Core\Axis.Sigma.Core.csproj", "{68CE79E1-BB67-432D-B0F9-3883D6130322}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{DB4FFFC6-DC7A-49AA-87DD-9F54C86EF487}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axis.Sigma.Test", "Axis.Sigma.Test\Axis.Sigma.Test.csproj", "{552ABF54-ACDC-49F3-ACB1-7AABF51DDA27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{528E4F31-C003-4C43-9324-3B307A58F9FE}"
+	ProjectSection(SolutionItems) = preProject
+		Axis.Sigma.Core\Backlog.txt = Axis.Sigma.Core\Backlog.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{68CE79E1-BB67-432D-B0F9-3883D6130322} = {567709F3-63E3-45D3-AEDF-298461ABBE45}
-		{552ABF54-ACDC-49F3-ACB1-7AABF51DDA27} = {DB4FFFC6-DC7A-49AA-87DD-9F54C86EF487}
+		{552ABF54-ACDC-49F3-ACB1-7AABF51DDA27} = {567709F3-63E3-45D3-AEDF-298461ABBE45}
 	EndGlobalSection
 EndGlobal

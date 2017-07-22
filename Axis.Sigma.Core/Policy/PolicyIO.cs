@@ -5,7 +5,7 @@ namespace Axis.Sigma.Core.Policy
 {
     public interface IPolicyReader
     {
-        IEnumerable<Policy> Policies();
+        IOperation<IEnumerable<Policy>> Policies();
     }
 
     public interface IPolicyWriter

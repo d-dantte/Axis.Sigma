@@ -6,7 +6,8 @@ namespace Axis.Sigma.Core.Policy
 
     public class Rule : IPolicyEnforcer
     {
-        public string Id { get; set; }
+        public string Code { get; set; }
+        public Guid Id { get; set; }
 
         #region Expressions
         public Func<Rule, IAuthorizationRequest, bool> EvaluationFunction { get; set; }

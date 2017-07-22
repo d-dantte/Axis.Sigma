@@ -1,4 +1,0 @@
-﻿
-2017/04/06 ==========================================================================================================================
-1.	Collapse the Action and Resource attributes into a single attribute (IntentAttribute ??) - this will greatly simplify the model.
-	[Done]
