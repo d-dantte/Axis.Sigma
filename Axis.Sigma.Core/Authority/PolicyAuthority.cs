@@ -1,7 +1,6 @@
 ﻿using static Axis.Luna.Extensions.ExceptionExtensions;
 
 using Axis.Sigma.Core.Policy;
-using Axis.Sigma.Core.Request;
 using System.Collections.Generic;
 using System.Linq;
 using Axis.Luna.Operation;
@@ -20,11 +19,12 @@ namespace Axis.Sigma.Core.Authority
             ThrowNullArguments(() => configuration);
 
             Configuration = configuration;
-            init();
+            LoadPolicies();
         }
-        private void init()
+
+        public void LoadPolicies()
         {
-            ///Read and cache policy sets from all provided policy readers
+            ///Refresh the policy cache from all configured PolicyReaders
             _policies = Configuration
                 .PolicyReaders
                 .Select(pr => new { source = pr, pset = pr.Policies().Resolve().ToList() })
@@ -32,7 +32,7 @@ namespace Axis.Sigma.Core.Authority
         }
 
 
-        public IOperation Authorize(IAuthorizationRequest request)
+        public IOperation Authorize(IAuthorizationContext request)
         => LazyOp.Try(() =>
         {
             var clause = Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll;

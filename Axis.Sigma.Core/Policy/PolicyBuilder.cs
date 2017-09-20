@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Core.Request;
-using System;
+﻿using System;
 
 //namespace Axis.Sigma.Core.Policy
 //{

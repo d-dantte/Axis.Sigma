@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Axis.Sigma.Core.Request
+namespace Axis.Sigma.Core
 {
-    public interface IAuthorizationRequest
+    public interface IAuthorizationContext
     {
         IEnumerable<IAttribute> SubjectAttributes();
         IEnumerable<IAttribute> EnvironmentAttributes();

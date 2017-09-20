@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Core.Request;
-using System;
+﻿using System;
 
 namespace Axis.Sigma.Core.Policy
 {
@@ -10,12 +9,12 @@ namespace Axis.Sigma.Core.Policy
         public Guid Id { get; set; }
 
         #region Expressions
-        public Func<Rule, IAuthorizationRequest, bool> EvaluationFunction { get; set; }
+        public Func<Rule, IAuthorizationContext, bool> EvaluationFunction { get; set; }
         #endregion
 
         #region IPolicyEnforcer
-        public Effect Authorize(IAuthorizationRequest request)
-        => EvaluationFunction?.Invoke(this, request) == true ?
+        public Effect Authorize(IAuthorizationContext context)
+        => EvaluationFunction?.Invoke(this, context) == true ?
            Effect.Grant :
            Effect.Deny;
 

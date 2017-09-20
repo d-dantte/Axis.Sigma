@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Core.Request;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System;
 
@@ -11,7 +10,7 @@ namespace Axis.Sigma.Core.Policy
         public string Title { get; set; }
 
         #region ITargetAware
-        public Func<Policy, IAuthorizationRequest, bool> IsAuthRequestTarget { get; set; }
+        public Func<Policy, IAuthorizationContext, bool> IsAuthRequestTarget { get; set; }
         #endregion
 
         #region Sub Policies
@@ -45,11 +44,11 @@ namespace Axis.Sigma.Core.Policy
         #endregion
 
         #region IPolicyEnforcer
-        public Effect Authorize(IAuthorizationRequest request)
+        public Effect Authorize(IAuthorizationContext context)
             => (CombinationClause ?? DefaultClauses.GrantOnAll)
-               .Combine(SubPolicies.Where(subpolicy => subpolicy.IsAuthRequestTarget?.Invoke(this, request) ?? false)
-                                   .Select(subpolicy => subpolicy.Authorize(request))
-                                   .Concat(Rules.Select(rule => rule.Authorize(request))));
+               .Combine(SubPolicies.Where(subpolicy => subpolicy.IsAuthRequestTarget?.Invoke(this, context) ?? false)
+                                   .Select(subpolicy => subpolicy.Authorize(context))
+                                   .Concat(Rules.Select(rule => rule.Authorize(context))));
         #endregion
     }
 }

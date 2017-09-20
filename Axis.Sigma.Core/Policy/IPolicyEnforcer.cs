@@ -1,9 +1,9 @@
-﻿using Axis.Sigma.Core.Request;
+﻿using Axis.Sigma.Core;
 
 namespace Axis.Sigma.Core.Policy
 {
     public interface IPolicyEnforcer
     {
-        Effect Authorize(IAuthorizationRequest request);
+        Effect Authorize(IAuthorizationContext context);
     }
 }
