@@ -1,4 +1,4 @@
-﻿namespace Axis.Sigma.Core.Policy
+﻿namespace Axis.Sigma.Policy
 {
     public interface ICombinable
     {

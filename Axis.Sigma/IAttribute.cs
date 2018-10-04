@@ -1,15 +1,13 @@
-﻿using Axis.Luna.Utils;
+﻿using Axis.Luna.Common.Contracts;
 using System;
 
-namespace Axis.Sigma.Core
+namespace Axis.Sigma
 {
     public interface IAttribute: ICloneable, IDataItem
     {
         AttributeCategory Category { get; }
 
         IAttribute Copy();
-
-        V ResolveData<V>();
     }
 }
 

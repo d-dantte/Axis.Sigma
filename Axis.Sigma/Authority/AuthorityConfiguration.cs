@@ -1,11 +1,10 @@
-﻿using static Axis.Luna.Extensions.ExceptionExtensions;
-
-using Axis.Sigma.Core.Policy;
+﻿using static Axis.Luna.Extensions.ExceptionExtension;
 using System.Collections.Generic;
 using System.Linq;
 using Axis.Luna.Extensions;
+using Axis.Sigma.Policy;
 
-namespace Axis.Sigma.Core.Authority
+namespace Axis.Sigma.Authority
 {
     public class AuthorityConfiguration
     {
@@ -14,10 +13,7 @@ namespace Axis.Sigma.Core.Authority
         private List<IPolicyReader> _policyReaders = new List<IPolicyReader>();
         public IEnumerable<IPolicyReader> PolicyReaders => _policyReaders.ToArray();
 
-        public AuthorityConfiguration()
-        {
-        }
-        public AuthorityConfiguration(IEnumerable<IPolicyReader> readers)
+        public AuthorityConfiguration(IEnumerable<IPolicyReader> readers = null)
         {
             AddPolicyReaders(readers?.ToArray() ?? new IPolicyReader[0]);
         }

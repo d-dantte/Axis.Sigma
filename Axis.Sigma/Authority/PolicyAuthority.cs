@@ -1,16 +1,17 @@
-﻿using static Axis.Luna.Extensions.ExceptionExtensions;
-
-using Axis.Sigma.Core.Policy;
+﻿using static Axis.Luna.Extensions.ExceptionExtension;
 using System.Collections.Generic;
 using System.Linq;
 using Axis.Luna.Operation;
+using Axis.Sigma.Policy;
+using Axis.Luna.Extensions;
 
-namespace Axis.Sigma.Core.Authority
+namespace Axis.Sigma.Authority
 {
     public class PolicyAuthority
     {
 
         private Dictionary<IPolicyReader, List<Policy.Policy>> _policies = null;
+
         public IEnumerable<Policy.Policy> Policies => _policies.SelectMany(_p => _p.Value);
         public AuthorityConfiguration Configuration { get; private set; }
 
@@ -32,13 +33,13 @@ namespace Axis.Sigma.Core.Authority
         }
 
 
-        public IOperation Authorize(IAuthorizationContext request)
-        => LazyOp.Try(() =>
+        public Operation Authorize(IAuthorizationContext context)
+        => Operation.Try(() =>
         {
             var clause = Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll;
 
-            clause.Combine(Policies.Where(_p => _p.IsAuthRequestTarget?.Invoke(_p, request) ?? false)
-                                   .Select(_p => _p.Authorize(request)))
+            clause.Combine(Policies.Where(_p => _p.IsTargeted(context.ResourceAttributes()))
+                                   .Select(_p => _p.Authorize(context)))
                   .ThrowIf(Effect.Deny, "Access Denied");
         });
     }

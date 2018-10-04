@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Axis.Sigma.Core.Policy
+namespace Axis.Sigma.Policy
 {
     #region Clause Def
     public interface ICombinationClause
@@ -80,11 +80,11 @@ namespace Axis.Sigma.Core.Policy
     {
         public static readonly GrantOnAll GrantOnAll = new GrantOnAll();
         public static readonly GrantOnAny GrantOnAny = new GrantOnAny();
-        public static GrantOnSome GrantOnSome(int minimumGrantCount) => new GrantOnSome { MinimumGrantCount = minimumGrantCount };
+        public static GrantOnSome GrantOnSome(int minimumGrantCount = 1) => new GrantOnSome { MinimumGrantCount = minimumGrantCount };
 
         public static readonly DenyOnAll DenyOnAll = new DenyOnAll();
         public static readonly DenyOnAny DenyOnAny = new DenyOnAny();
-        public static DenyOnSome DenyOnSome(int minimumDenyCount) => new DenyOnSome { MinimumDenyCount = minimumDenyCount };
+        public static DenyOnSome DenyOnSome(int minimumDenyCount = 1) => new DenyOnSome { MinimumDenyCount = minimumDenyCount };
     }
     
 }

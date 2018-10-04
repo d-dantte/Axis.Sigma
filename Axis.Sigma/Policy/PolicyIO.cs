@@ -1,15 +1,15 @@
 ﻿using Axis.Luna.Operation;
 using System.Collections.Generic;
 
-namespace Axis.Sigma.Core.Policy
+namespace Axis.Sigma.Policy
 {
     public interface IPolicyReader
     {
-        IOperation<IEnumerable<Policy>> Policies();
+        Operation<IEnumerable<Policy>> Policies();
     }
 
     public interface IPolicyWriter
     {
-        IOperation Persist(IEnumerable<Policy> policies);
+        Operation Persist(IEnumerable<Policy> policies);
     }
 }
