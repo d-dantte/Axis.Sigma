@@ -1,0 +1,9 @@
+
+2018-12-02 =====================================================================
+1.	 Try to extract into a separate project the "Expression" part of sigma. This is to enable
+	 a simplified and implementation-agnostic api for sigma. Basically, the expressions can be
+	 implemented in whatever way is necessary, the endpoint should be an "Evaluate" function
+	 (or similar) that when called will evaluate the rule - this was the original design.
+	 we should have a separate project that now implements some "IRuleExpression" interface
+	 that hosts the "Evaluate" function. This project is where i can implement the dynamic
+	 expression builder that i currently have in the "Expression" namespace/package.

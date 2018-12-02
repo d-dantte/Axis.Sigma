@@ -25,7 +25,7 @@ namespace Axis.Sigma.Authority
 
         public void LoadPolicies()
         {
-            ///Refresh the policy cache from all configured PolicyReaders
+            //Refresh the policy cache from all configured PolicyReaders
             _policies = Configuration
                 .PolicyReaders
                 .Select(pr => new { source = pr, pset = pr.Policies().Resolve().ToList() })
