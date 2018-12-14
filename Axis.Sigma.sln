@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC18A19C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axis.Sigma.Tests", "Axis.Sigma.Tests\Axis.Sigma.Tests.csproj", "{C834C291-5A90-4770-8E93-33D2FB44753F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axis.Sigma.Expression", "Axis.Sigma.Expression\Axis.Sigma.Expression.csproj", "{6BB85255-0495-4796-904B-8A6B27D32605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{C834C291-5A90-4770-8E93-33D2FB44753F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C834C291-5A90-4770-8E93-33D2FB44753F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C834C291-5A90-4770-8E93-33D2FB44753F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB85255-0495-4796-904B-8A6B27D32605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB85255-0495-4796-904B-8A6B27D32605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB85255-0495-4796-904B-8A6B27D32605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB85255-0495-4796-904B-8A6B27D32605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0BF30E49-9868-4120-9060-525FE248E3F1} = {567709F3-63E3-45D3-AEDF-298461ABBE45}
 		{C834C291-5A90-4770-8E93-33D2FB44753F} = {EC18A19C-7114-4E7A-B6AA-7E8BECD6EA37}
+		{6BB85255-0495-4796-904B-8A6B27D32605} = {567709F3-63E3-45D3-AEDF-298461ABBE45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BF91EF9-C6F7-49B9-874D-03A0A913C311}

@@ -10,10 +10,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Axis.Sigma.Expression\Axis.Sigma.Expression.csproj" />
     <ProjectReference Include="..\Axis.Sigma\Axis.Sigma.csproj" />
   </ItemGroup>
 

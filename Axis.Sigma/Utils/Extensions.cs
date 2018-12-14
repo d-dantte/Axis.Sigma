@@ -28,7 +28,7 @@ namespace Axis.Sigma.Utils
                 case CommonDataType.Location:
                 case CommonDataType.Phone:
                 case CommonDataType.String:
-                case CommonDataType.Tags:
+                case CommonDataType.NVP:
                 case CommonDataType.UnknownType:
                 case CommonDataType.Url: return true;
                 default: return false;

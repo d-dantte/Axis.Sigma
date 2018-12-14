@@ -3,18 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.0.0</Version>
+    <Version>4.2.0</Version>
     <Authors>dantte</Authors>
     <Company>Axiis</Company>
     <Description>Generic Attribute Based Access Control Implementation for c#</Description>
     <PackageTags>ABAC Attribute Access-Control</PackageTags>
+    <PackageReleaseNotes>Simplified the PolicyAuthority implementation by adding a filtered retrieval method to the IPolicyReader</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Axis.Luna.Common" Version="4.0.4" />
-    <PackageReference Include="Axis.Luna.Extensions" Version="4.0.6" />
-    <PackageReference Include="Axis.Luna.Operation" Version="4.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Axis.Luna.Common" Version="4.2.1" />
+    <PackageReference Include="Axis.Luna.Extensions" Version="4.2.0" />
+    <PackageReference Include="Axis.Luna.Operation" Version="4.2.0" />
   </ItemGroup>
 
 </Project>

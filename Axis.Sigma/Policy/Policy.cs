@@ -53,10 +53,12 @@ namespace Axis.Sigma.Policy
         #region IPolicyEnforcer
         public Effect Authorize(IAuthorizationContext context)
         {
+            var resources = context.ResourceAttributes();
             return (CombinationClause ?? DefaultClauses.GrantOnAll)
-                .Combine(SubPolicies.Where(subpolicy => subpolicy.IsTargeted(context.ResourceAttributes()))
-                                    .Select(subpolicy => subpolicy.Authorize(context))
-                                    .Concat(Rules.Select(rule => rule.Authorize(context))));
+                .Combine(SubPolicies
+                .Where(subpolicy => subpolicy.IsTargeted(resources))
+                .Select(subpolicy => subpolicy.Authorize(context))
+                .Concat(Rules.Select(rule => rule.Authorize(context))));
         }
         #endregion
     }

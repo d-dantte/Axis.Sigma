@@ -10,7 +10,7 @@ namespace Axis.Sigma.Authority
     {
         public ICombinationClause RootPolicyCombinationClause { get; set; } = DefaultClauses.GrantOnAll;
 
-        private List<IPolicyReader> _policyReaders = new List<IPolicyReader>();
+        private readonly List<IPolicyReader> _policyReaders = new List<IPolicyReader>();
         public IEnumerable<IPolicyReader> PolicyReaders => _policyReaders.ToArray();
 
         public AuthorityConfiguration(IEnumerable<IPolicyReader> readers = null)
