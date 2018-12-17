@@ -34,7 +34,7 @@ namespace Axis.Sigma.Policy
         #endregion
 
         #region Rules
-        private List<Rule> _rules = new List<Rule>();
+        private readonly List<Rule> _rules = new List<Rule>();
         public IEnumerable<Rule> Rules
         {
             get =>  _rules.ToArray();
