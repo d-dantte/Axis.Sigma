@@ -6,6 +6,6 @@
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        Effect Authorize(IAuthorizationContext context);
+        Effect? Authorize(IAuthorizationContext context);
     }
 }

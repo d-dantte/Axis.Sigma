@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Utils;
-using System;
+﻿using System;
 
 namespace Axis.Sigma.Policy
 {
@@ -14,25 +13,13 @@ namespace Axis.Sigma.Policy
         public Guid Id { get; set; }
         public IPolicyExpression Expression { get; set; }
 
+        public virtual Policy Policy { get; set; }
+
         #region IPolicyEnforcer
-        public Effect Authorize(IAuthorizationContext context)
+        public Effect? Authorize(IAuthorizationContext context)
         => Expression?.Evaluate(context) == true ?
            EvaluationEffect :
-           EvaluationEffect.Flip();
+           (Effect?) null;
         #endregion
     }
-
-    //public class AttributeInfo
-    //{
-    //    public CommonDataType Type { get; set; }
-    //    public AttributeCategory Category { get; set; }
-    //    public string Name { get; set; }
-
-    //    public override int GetHashCode() => ValueHash(Type, Category, Name);
-    //    public override bool Equals(object obj)
-    //    => obj is AttributeInfo info
-    //       && info.Type == Type
-    //       && info.Category == Category
-    //       && info.Name == Name;
-    //}
 }

@@ -1,20 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.2.1</Version>
+    <Version>4.6.0</Version>
     <Authors>dantte</Authors>
     <Company>Axiis</Company>
     <Description>Generic Attribute Based Access Control Implementation for c#</Description>
     <PackageTags>ABAC Attribute Access-Control</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/d-dantte/Axis.Sigma/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/d-dantte/Axis.Sigma/</RepositoryUrl>
+    <AssemblyVersion>4.6.0.0</AssemblyVersion>
+    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Axis.Luna.Common" Version="4.2.1" />
-    <PackageReference Include="Axis.Luna.Extensions" Version="4.2.0" />
-    <PackageReference Include="Axis.Luna.Operation" Version="4.2.0" />
+    <PackageReference Include="Axis.Luna.Common" Version="4.3.0" />
+    <PackageReference Include="Axis.Luna.Extensions" Version="4.3.0" />
+    <PackageReference Include="Axis.Luna.Operation" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

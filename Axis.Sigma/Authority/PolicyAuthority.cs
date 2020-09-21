@@ -24,18 +24,15 @@ namespace Axis.Sigma.Authority
         {
             var clause = Configuration.RootPolicyCombinationClause ?? DefaultClauses.GrantOnAll;
 
-            var resourceAttributes = context
-                .ResourceAttributes()
-                .ToArray();
-
+            //ideally, each policy reader should implement their own caching mechanism
             var policies = (await Configuration
                 .PolicyReaders
-                .Select(reader => reader.PolicyForResource(resourceAttributes))
+                .Select(reader => reader.Policies())
                 .Fold())
                 .SelectMany(group => group);
 
             clause.Combine(policies
-                  .Where(policy => policy.IsTargeted(resourceAttributes))
+                  .Where(policy => policy.AppliesTo(context))
                   .Select(policy => policy.Authorize(context)))
                   .ThrowIf(Effect.Deny, new Exceptions.SigmaAccessDeniedException("Access Denied"));
         });
