@@ -106,11 +106,11 @@ $not-exp -> +[
 	$boolean-exp
 ]
 $present-exp -> +[
-	$attribute-scalar-access
+	$attribute-scalar-access-exp
 	$block-space "present"
 ]
 $absent-exp -> +[
-	$attribute-scalar-access
+	$attribute-scalar-access-exp
 	$block-space "absent"
 ]
 $empty-exp -> +[
@@ -131,7 +131,7 @@ $boolean-value-exp -> ?[
 	$attirbute-scalar-access
 	+[
 		"(" $block-space.?
-		?[$boolean-cnstant-value $attribute-scalar-access $boolean-exp]
+		?[$boolean-exp]
 		$block-space.? ")"
 	]
 ]
@@ -146,7 +146,7 @@ $value-exp -> ?[
 	$boolean-exp
 ]
 $vector-exp -> ?[
-	$attribute-vector-access
+	$attribute-vector-access-exp
 	$range-exp
 	$set-exp
 ]
@@ -208,6 +208,33 @@ $character-exp -> [
 
 # Numeric Expression
 $numeric-exp -> [
+	$bit-shift-exp
+	$exponent-exp
+	$multiplicative-exp
+	$additive-exp
+	$numeric-value
+]
+$numeric-value -> +[
+	$numeric-constant-value
+	$attirbute-scalar-access
+	+[
+		"(" $block-space.?
+		$numeric-exp
+		$block-space.? ")"
+	]
+]
+$numeric-constant-value -> ?[
+	$integer-constant-value
+	$real-constant-value
+	$decimal-constant-value
+]
+$integer-constant-value -> +[
+
+]
+$real-constant-value -> +[
+
+]
+$decimal-constant-value -> +[
 
 ]
 
@@ -221,14 +248,14 @@ $global-ref-exp -> ?[
 	"@intent"
 	"@environment"
 ]
-$attribute-scalar-access -> +[
+$attribute-scalar-access-exp -> +[
 	$global-ref-exp
 	?[
 		+["." $attribute-identifier]
 		+[".'" $attribute-name "'"]
 	].+
 ]
-$attribute-vector-access -> +[
+$attribute-vector-access-exp -> +[
 	$global-ref-exp
 	"["
 	?[
