@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Axis.Sigma.Policy
+namespace Axis.Sigma.Policy_old
 {
     [Obsolete]
     public interface IResourceTargeter

@@ -1,4 +1,7 @@
-﻿namespace Axis.Sigma.Policy
+﻿using Axis.Sigma.Authority;
+using Axis.Sigma.Policy;
+
+namespace Axis.Sigma.Policy_old
 {
     public interface IPolicyEnforcer
     {

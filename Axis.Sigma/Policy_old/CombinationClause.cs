@@ -1,9 +1,10 @@
 ﻿using Axis.Luna.Extensions;
+using Axis.Sigma.Policy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Axis.Sigma.Policy
+namespace Axis.Sigma.Policy_old
 {
     using Ext = Utils.Extensions;
 

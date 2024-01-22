@@ -1,0 +1,250 @@
+﻿#
+# SPREE Grammar
+#
+#
+
+# SPREE
+$spree -> $boolean-exp
+
+
+
+# Boolean Expression
+$boolean-exp -> ?[
+	$relational-exp
+	$equality-exp
+	$conditional-exp
+	$boolean-unary-exp
+	$boolean-value-exp
+]
+
+
+
+
+# Relational Expression
+$relational-exp -> ?[
+	$relational-set-exp
+	$relational-scalar-exp
+]
+$relational-set-exp -> :3 +[
+	+[$vector-exp $block-space "in" $block-space $vector-exp]
+	+[$scalar-exp $block-space "in" $block-space $vector-exp]
+	+[$vector-exp $block-space "contains" $block-space $scalar-exp]
+]
+$relational-scalar-exp -> :3 +[
+	$scalar-exp
+	$block-space $relational-scalar-operator
+	$block-space $scalar-exp
+]
+$relational-scalar-operator -> ?[
+	">" ">="
+	"<" "<="
+]
+
+
+
+
+# Equality Expression
+$equality-exp -> ?[
+	$vector-equality-exp
+	$scalar-equality-exp
+	$boolean-equaity-exp
+]
+$equality-operator -> ?[
+	$equals
+	$not-equals
+]
+$equals -> ?[
+	"is equal to"
+	"="
+]
+$not-equals -> ?[
+	"is not equal to"
+	"!="
+]
+$vector-equality-exp -> :3 +[
+	$vector-exp
+	$block-space $equality-operator
+	$block-space $vector-exp
+]
+$scalar-equality-exp -> :3 +[
+	$scalar-exp
+	$block-space $equality-operator
+	$block-space $scalar-exp
+]
+$boolean-equality-exp -> :3 +[
+	?[$relational-exp $conditional-exp $boolean-unary-exp $boolean-value-exp]
+	$block-space $equality-operator
+	$block-space $boolean-exp
+]
+
+
+
+# Conditional Expression
+$conditional-exp -> :3 +[
+	?[$relational-exp $equality-exp $boolean-unary-exp $boolean-value-exp]
+	$block-space $conditional-operator
+	$block-space $boolean-exp
+]
+$conditional-operator -> ?[
+	"and"
+	"or"
+]
+
+
+
+
+# Boolean Unary Expression
+$boolean-unary-exp -> ?[
+	$not-exp
+	$present-exp
+	$absent-exp
+	$empty-exp
+]
+$not-exp -> +[
+	"not"
+	$block-space
+	$boolean-exp
+]
+$present-exp -> +[
+	$attribute-scalar-access
+	$block-space "present"
+]
+$absent-exp -> +[
+	$attribute-scalar-access
+	$block-space "absent"
+]
+$empty-exp -> +[
+	$vector-value
+	$block-space
+	?[
+		"is empty"
+		"is not empty"
+	]
+]
+
+
+
+
+# Boolean Value Expression
+$boolean-value-exp -> ?[
+	$boolean-constant-value
+	$attirbute-scalar-access
+	+[
+		"(" $block-space.?
+		?[$boolean-cnstant-value $attribute-scalar-access $boolean-exp]
+		$block-space.? ")"
+	]
+]
+
+
+
+
+# Value Expression
+$value-exp -> ?[
+	$vector-exp
+	$scalar-exp
+	$boolean-exp
+]
+$vector-exp -> ?[
+	$attribute-vector-access
+	$range-exp
+	$set-exp
+]
+$range-exp -> 3: +[
+	"["
+	$scalar-exp
+	".."
+	$scalar-exp
+	"]"
+]
+$set-exp -> :3 +[
+	"["
+	$block-space.? $scalar-value
+	+[$block-space.? "," $block-space $scalar-value].+
+	$block-space.? "]"
+]
+$scalar-exp -> ?[
+	$string-exp
+	$timestamp-exp
+	$duration-exp
+	$character-exp
+	$numeric-exp
+]
+
+
+
+
+# String Expression
+$string-exp -> ?[
+	
+]
+
+
+
+
+# Timestamp Expression
+$timestamp-exp -> [
+
+]
+
+
+
+
+# Duration Expression
+$duration-exp -> [
+
+]
+
+
+
+
+# Character Expression
+$character-exp -> [
+
+]
+
+
+
+
+# Numeric Expression
+$numeric-exp -> [
+
+]
+
+
+
+
+# Global Reference Expression
+$global-ref-exp -> ?[
+	"@subject"
+	"@resource"
+	"@intent"
+	"@environment"
+]
+$attribute-scalar-access -> +[
+	$global-ref-exp
+	?[
+		+["." $attribute-identifier]
+		+[".'" $attribute-name "'"]
+	].+
+]
+$attribute-vector-access -> +[
+	$global-ref-exp
+	"["
+	?[
+		$attribute-identifier
+		+["'" $attribute-name "'"]
+	]
+	"]"
+]
+
+
+
+
+# Whitespaces
+$block-space -> ?[$space $tab $line-feed $carriage-return].+
+$line-space -> ?[$space $tab].+
+$space -> '\s'
+$tab -> '\t'
+$line-feed -> "\n"
+$carriage-return -> '\r'

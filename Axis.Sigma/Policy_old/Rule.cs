@@ -1,6 +1,8 @@
 ﻿using System;
+using Axis.Sigma.Authority;
+using Axis.Sigma.Policy;
 
-namespace Axis.Sigma.Policy
+namespace Axis.Sigma.Policy_old
 {
 
     public class Rule : IPolicyEnforcer

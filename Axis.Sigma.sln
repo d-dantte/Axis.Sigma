@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{567709F3-63E3-45D3-AEDF-298461ABBE45}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{528E4F31-C003-4C43-9324-3B307A58F9FE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution Items", ".solution Items", "{528E4F31-C003-4C43-9324-3B307A58F9FE}"
 	ProjectSection(SolutionItems) = preProject
 		BackLog.txt = BackLog.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axis.Sigma", "Axis.Sigma\Axis.Sigma.csproj", "{0BF30E49-9868-4120-9060-525FE248E3F1}"
@@ -16,7 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC18A19C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axis.Sigma.Tests", "Axis.Sigma.Tests\Axis.Sigma.Tests.csproj", "{C834C291-5A90-4770-8E93-33D2FB44753F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axis.Sigma.Expression", "Axis.Sigma.Expression\Axis.Sigma.Expression.csproj", "{6BB85255-0495-4796-904B-8A6B27D32605}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axis.Sigma.Expression", "Axis.Sigma.Expression\Axis.Sigma.Expression.csproj", "{6BB85255-0495-4796-904B-8A6B27D32605}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github.workflows", ".github.workflows", "{0AEB61F1-CDC9-460B-ADAB-20D42BBF78F6}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yaml = .github\workflows\ci.yaml
+		.github\workflows\pre-release.yaml = .github\workflows\pre-release.yaml
+		.github\workflows\release.yaml = .github\workflows\release.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

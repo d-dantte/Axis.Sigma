@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>Latest</LangVersion>
+    <Nullable>enable</Nullable>
     <Version>4.6.0</Version>
     <Authors>dantte</Authors>
     <Company>Axiis</Company>
@@ -17,9 +19,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Axis.Luna.Common" Version="4.3.0" />
-    <PackageReference Include="Axis.Luna.Extensions" Version="4.3.0" />
-    <PackageReference Include="Axis.Luna.Operation" Version="4.3.0" />
+    <None Remove="Policy\Expression\spree.xbnf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Policy\Expression\spree.xbnf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Axis.Luna.Common" Version="6.0.30" />
+    <PackageReference Include="Axis.Luna.Extensions" Version="6.0.28" />
+    <PackageReference Include="Axis.Pulsar.Core" Version="0.0.1" />
+    <PackageReference Include="Axis.Pulsar.Core.XBNF" Version="0.0.1" />
   </ItemGroup>
 
 </Project>

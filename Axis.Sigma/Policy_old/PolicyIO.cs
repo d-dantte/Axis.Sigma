@@ -1,7 +1,7 @@
 ﻿using Axis.Luna.Operation;
 using System.Collections.Generic;
 
-namespace Axis.Sigma.Policy
+namespace Axis.Sigma.Policy_old
 {
     public interface IPolicyReader
     {
