@@ -176,7 +176,7 @@ $scalar-exp -> ?[
 
 # String Expression
 $string-exp -> ?[
-	
+	$
 ]
 
 
@@ -206,15 +206,23 @@ $character-exp -> [
 
 
 
-# Numeric Expression
-$numeric-exp -> [
-	$bit-shift-exp
-	$exponent-exp
-	$multiplicative-exp
-	$additive-exp
+# Numeric Expression (flattened)
+$numeric-exp -> +[
 	$numeric-value
+	+[
+		$block-space $numeric-operator
+		$block-space $numeric-value
+	].*
 ]
-$numeric-value -> +[
+$numeric-operator -> ?[
+	"^"
+	"<<" ">>"
+	"*" "/" "%"
+	"+" "-"
+]
+
+# Numeric value
+$numeric-value-exp -> ?[
 	$numeric-constant-value
 	$attirbute-scalar-access
 	+[
@@ -229,13 +237,43 @@ $numeric-constant-value -> ?[
 	$decimal-constant-value
 ]
 $integer-constant-value -> +[
-
+	"-".?
+	/^\d+$/
+	?["i" "I"]
 ]
 $real-constant-value -> +[
+	# integral part
+	"-".? /^\d+$/
 
+	# decimal part
+	"." /^\d+$/
+
+	# optional exponent part
+	+[
+		?["e" "E"]
+		?["+" "-"]
+		/^\d+$/
+	].?
+
+	# suffix
+	"r"
 ]
 $decimal-constant-value -> +[
+	# integral part
+	"-".? /^\d+$/
 
+	# decimal part
+	"." /^\d+$/
+
+	# optional exponent part
+	+[
+		?["e" "E"]
+		?["+" "-"]
+		/^\d+$/
+	].?
+
+	# suffix
+	?["d" "D"]
 ]
 
 
@@ -248,14 +286,14 @@ $global-ref-exp -> ?[
 	"@intent"
 	"@environment"
 ]
-$attribute-scalar-access-exp -> +[
+$attribute-scalar-access-exp -> :2 +[
 	$global-ref-exp
 	?[
 		+["." $attribute-identifier]
 		+[".'" $attribute-name "'"]
 	].+
 ]
-$attribute-vector-access-exp -> +[
+$attribute-vector-access-exp -> :2 +[
 	$global-ref-exp
 	"["
 	?[

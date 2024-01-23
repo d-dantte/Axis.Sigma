@@ -1,4 +1,6 @@
-﻿namespace Axis.Sigma.Policy.Expression
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+
+namespace Axis.Sigma.Policy.Expression
 {
     public class PolicyExpressionBuilder
     {
