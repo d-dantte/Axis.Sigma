@@ -4,7 +4,10 @@
 #
 
 # SPREE
-$spree -> $boolean-exp
+$spree -> +[
+	$boolean-exp
+	@EOF
+]
 
 
 
@@ -26,14 +29,35 @@ $relational-exp -> ?[
 	$relational-scalar-exp
 ]
 $relational-set-exp -> :3 +[
-	+[$vector-exp $block-space "in" $block-space $vector-exp]
-	+[$scalar-exp $block-space "in" $block-space $vector-exp]
-	+[$vector-exp $block-space "contains" $block-space $scalar-exp]
+	+[$set-exp $block-space "in" $block-space $set-exp]
+	+[$scalar-exp $block-space "in" $block-space $set-exp]
+	+[$set-exp $block-space "contains" $block-space $scalar-exp]
 ]
-$relational-scalar-exp -> :3 +[
-	$scalar-exp
+$relational-scalar-exp -> ?[
+	$numeric-relational-exp
+	$string-relational-exp
+	$timestamp-relational-exp
+	$duration-relational-exp
+]
+$numeric-relational-exp -> :3 +[
+	$numeric-exp
 	$block-space $relational-scalar-operator
-	$block-space $scalar-exp
+	$block-space $numeric-exp
+]
+$string-relational-exp -> :3 +[
+	$string-exp
+	$block-space $relational-scalar-operator
+	$block-space $string-exp
+]
+$timestamp-relational-exp -> :3 +[
+	$timestamp-exp
+	$block-space $relational-scalar-operator
+	$block-space $timestamp-exp
+]
+$duration-relational-exp -> :3 +[
+	$duration-exp
+	$block-space $relational-scalar-operator
+	$block-space $duration-exp
 ]
 $relational-scalar-operator -> ?[
 	">" ">="
@@ -45,9 +69,12 @@ $relational-scalar-operator -> ?[
 
 # Equality Expression
 $equality-exp -> ?[
-	$vector-equality-exp
-	$scalar-equality-exp
+	$set-equality-exp
 	$boolean-equaity-exp
+	$numeric-equality-exp
+	$string-equality-exp
+	$timestamp-equality-exp
+	$duration-equality-exp
 ]
 $equality-operator -> ?[
 	$equals
@@ -61,20 +88,35 @@ $not-equals -> ?[
 	"is not equal to"
 	"!="
 ]
-$vector-equality-exp -> :3 +[
-	$vector-exp
+$set-equality-exp -> :3 +[
+	$set-exp
 	$block-space $equality-operator
-	$block-space $vector-exp
-]
-$scalar-equality-exp -> :3 +[
-	$scalar-exp
-	$block-space $equality-operator
-	$block-space $scalar-exp
+	$block-space $set-exp
 ]
 $boolean-equality-exp -> :3 +[
 	?[$relational-exp $conditional-exp $boolean-unary-exp $boolean-value-exp]
 	$block-space $equality-operator
 	$block-space $boolean-exp
+]
+$numeric-equality-exp -> :3 +[
+	$numeric-exp
+	$block-space $equality-operator
+	$block-space $numeric-exp
+]
+$string-equality-exp -> :3 +[
+	$string-exp
+	$block-space $equality-operator
+	$block-space $string-exp
+]
+$timestamp-equality-exp -> :3 +[
+	$timestamp-exp
+	$block-space $equality-operator
+	$block-space $timestamp-exp
+]
+$duration-equality-exp -> :3 +[
+	$duration-exp
+	$block-space $equality-operator
+	$block-space $duration-exp
 ]
 
 
@@ -114,7 +156,7 @@ $absent-exp -> +[
 	$block-space "absent"
 ]
 $empty-exp -> +[
-	$vector-value
+	$set-value
 	$block-space
 	?[
 		"is empty"
@@ -135,18 +177,22 @@ $boolean-value-exp -> ?[
 		$block-space.? ")"
 	]
 ]
+$boolean-constant-value -> ?[
+	"true"
+	"false"
+]
 
 
 
 
 # Value Expression
 $value-exp -> ?[
-	$vector-exp
+	$set-exp
 	$scalar-exp
 	$boolean-exp
 ]
-$vector-exp -> ?[
-	$attribute-vector-access-exp
+$set-exp -> ?[
+	$attribute-set-access-exp
 	$range-exp
 	$set-exp
 ]
@@ -165,6 +211,7 @@ $set-exp -> :3 +[
 ]
 $scalar-exp -> ?[
 	$string-exp
+	$character-exp
 	$timestamp-exp
 	$duration-exp
 	$character-exp
@@ -176,7 +223,30 @@ $scalar-exp -> ?[
 
 # String Expression
 $string-exp -> ?[
-	$
+	$string-substring-exp
+	$string-character-exp
+	$string-conversion-exp
+	$string-value-exp
+]
+$string-value-exp -> ?[
+	$string-constant-exp
+	$attribute-scalar-access-exp
+]
+$string-constant-exp ->@DelimitedString{
+	start: '"',
+	ranges: '^\n, ^\r'
+}
+$string-conversion-exp -> +[
+	
+]
+
+
+
+
+
+# Character Expression
+$character-exp -> [
+
 ]
 
 
@@ -208,10 +278,10 @@ $character-exp -> [
 
 # Numeric Expression (flattened)
 $numeric-exp -> +[
-	$numeric-value
+	$numeric-value-exp
 	+[
 		$block-space $numeric-operator
-		$block-space $numeric-value
+		$block-space $numeric-value-exp
 	].*
 ]
 $numeric-operator -> ?[
@@ -293,7 +363,7 @@ $attribute-scalar-access-exp -> :2 +[
 		+[".'" $attribute-name "'"]
 	].+
 ]
-$attribute-vector-access-exp -> :2 +[
+$attribute-set-access-exp -> :2 +[
 	$global-ref-exp
 	"["
 	?[
