@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Policy;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Axis.Sigma.Policy.Control
 {
@@ -11,5 +10,10 @@ namespace Axis.Sigma.Policy.Control
         /// <param name="context">The context to authorize</param>
         /// <returns>Authorization effect - grant/deny</returns>
         Task<Effect> Authorize(AccessContext context);
+
+        /// <summary>
+        /// Configures an effect to be applied in the absence of any policies
+        /// </summary>
+        Effect ImplicitEffect { get; }
     }
 }

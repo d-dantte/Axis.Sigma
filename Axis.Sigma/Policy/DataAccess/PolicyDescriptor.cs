@@ -20,9 +20,9 @@ namespace Axis.Sigma.Policy.DataAccess
         public string? RuleExpression { get; set; }
 
         /// <summary>
-        /// 
+        /// A comma separated list of string representation of <see cref="AttributeTarget"/> instances, arranged in ascending order.
         /// </summary>
-        public string? TargetResourceId { get; set; }
+        public string? Targets { get; set; }
 
         /// <summary>
         /// 
@@ -48,5 +48,14 @@ namespace Axis.Sigma.Policy.DataAccess
         /// 
         /// </summary>
         public DateTimeOffset UpdatedOn { get; set; }
+
+
+        /// <summary>
+        /// Validates that the target property contains only attributes defined/expressed in the rule expression.
+        /// </summary>
+        public void ValidateTargets()
+        {
+
+        }
     }
 }

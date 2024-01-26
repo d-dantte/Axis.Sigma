@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Policy;
-using Axis.Sigma.Policy.DataAccess;
+﻿using Axis.Sigma.Policy.DataAccess;
 using Axis.Sigma.Utils;
 using System;
 using System.Linq;
@@ -10,18 +9,25 @@ namespace Axis.Sigma.Policy.Control
     public class PolicyAuthority : IPolicyAuthority
     {
         private readonly IPolicyCache _policyCache;
+        private readonly Effect _implicitEffect;
 
-        public PolicyAuthority(IPolicyCache policyCache)
+
+        public Effect ImplicitEffect => _implicitEffect;
+
+        public PolicyAuthority(
+            Effect implicitEffect,
+            IPolicyCache policyCache)
         {
             ArgumentNullException.ThrowIfNull(policyCache);
 
             _policyCache = policyCache;
+            _implicitEffect = implicitEffect;
         }
 
         public Task<Effect> Authorize(
             AccessContext context)
             => _policyCache
-                .GetResourcePolicies(context.Resource.Id)
+                .GetApplicablePolicies(context)
                 .Map(policies => policies
                     .Select(policy => policy.Enforce(context))
                     .Combine());

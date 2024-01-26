@@ -23,10 +23,6 @@ namespace Axis.Sigma.Authority.Attribute
 
         public static IAttributeValue Of(bool value) => new BooleanValue(value);
 
-        public static IAttributeValue Of(byte[] value) => new BinaryValue(ImmutableArray.Create(value));
-
-        public static IAttributeValue Of(ImmutableArray<byte> value) => new BinaryValue(value);
-
         public static IAttributeValue Of(string value) => new StringValue(value);
         #endregion
 

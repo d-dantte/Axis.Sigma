@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Axis.Sigma.Authority;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
+//using Axis.Sigma.Authority;
 
-namespace Axis.Sigma.Policy_old
-{
+//namespace Axis.Sigma.Policy_old
+//{
 
-    public interface IPolicyExpression
-    {
-        bool Evaluate(IAuthorizationContext context);
-    }
-}
+//    public interface IPolicyExpression
+//    {
+//        bool Evaluate(IAuthorizationContext context);
+//    }
+//}

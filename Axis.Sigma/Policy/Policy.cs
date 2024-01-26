@@ -2,13 +2,16 @@
 using Axis.Sigma.Policy.Control;
 using Axis.Sigma.Policy.DataAccess;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Axis.Sigma.Policy
 {
     public class Policy
     {
         private readonly Func<AccessContext, Effect> _rule;
-        private readonly string _targetResourceId;
+        private readonly ImmutableArray<AttributeTarget> _target;
         private readonly Guid _id;
         private readonly DateTimeOffset? _validUntil;
         private readonly PolicyStatus _status;
@@ -21,7 +24,7 @@ namespace Axis.Sigma.Policy
         /// <summary>
         /// The id of the target resource
         /// </summary>
-        public string TargetResourceId => _targetResourceId;
+        public ImmutableArray<AttributeTarget> Target => _target;
 
         /// <summary>
         /// The status of the policy
@@ -38,7 +41,7 @@ namespace Axis.Sigma.Policy
 
         public Policy(
             Guid id,
-            string targetResourceId,
+            IEnumerable<AttributeTarget> target,
             Func<AccessContext, Effect> rule)
         {
             _id = id;
@@ -46,14 +49,29 @@ namespace Axis.Sigma.Policy
             _rule = rule.ThrowIfNull(
                 () => throw new ArgumentNullException(nameof(rule)));
 
-            _targetResourceId = targetResourceId.ThrowIf(
-                string.IsNullOrWhiteSpace,
-                _ => new ArgumentException(
-                    $"Invalid {nameof(targetResourceId)}: null/empty/whitespace"));
+            _target = target
+                .ThrowIfNull(
+                    () => new ArgumentException(
+                        $"Invalid {nameof(target)}: null/empty/whitespace"))
+                .ThrowIfAny(
+                    att => att.IsDefault,
+                    _ => new ArgumentException(
+                        $"Invalid {nameof(target)}: contains default"))
+                .ToImmutableArray();
         }
 
         public Effect Enforce(
             AccessContext accessContext)
             => _rule.Invoke(accessContext);
+
+        /// <summary>
+        /// Builds a policy object from the given descriptor
+        /// </summary>
+        /// <param name="descriptor"></param>
+        /// <returns></returns>
+        public static Policy FromDescriptor(PolicyDescriptor descriptor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
