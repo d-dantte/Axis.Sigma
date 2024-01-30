@@ -143,18 +143,18 @@ $boolean-unary-exp -> ?[
 	$absent-exp
 	$empty-exp
 ]
-$not-exp -> +[
+$not-exp -> :2 +[
 	"not"
 	$block-space
 	$boolean-exp
 ]
 $present-exp -> +[
-	$attribute-scalar-access-exp
-	$block-space "present"
+	?[$attribute-scalar-access-exp $global-ref-exp]
+	$block-space "is present"
 ]
 $absent-exp -> +[
-	$attribute-scalar-access-exp
-	$block-space "absent"
+	?[$attribute-scalar-access-exp $global-ref-exp]
+	$block-space "is absent"
 ]
 $empty-exp -> +[
 	$set-exp
@@ -201,13 +201,18 @@ $set-exp -> ?[
 	$attribute-set-access-exp
 	$range-exp
 	$items-exp
+	+[
+		"(" $block-space.?
+		$set-exp
+		$block-space.? ")"
+	]
 ]
 $range-exp -> :3 +[
 	"["
-	$scalar-exp
-	".."
-	$scalar-exp
-	"]"
+	$block-space.? $scalar-exp
+	$block-space.? ".."
+	$block-space.? $scalar-exp
+	$block-space.? "]"
 ]
 $items-exp -> :3 +[
 	"["
@@ -228,11 +233,18 @@ $string-exp -> ?[
 $string-value-exp -> ?[
 	$string-constant-exp
 	$attribute-scalar-access-exp
+	$global-ref-exp
+	+[
+		"(" $block-space.?
+		$string-exp
+		$block-space.? ")"
+	]
 ]
 $string-constant-exp -> @DelimitedString{
 	start: '"',
+	end: '"',
 	ranges: '^\n, ^\r',
-	escaped-delimiter: '\\"'
+	escaped-delimiter: '\"'
 }
 $string-character-exp -> :3 +[
 	$string-value-exp
@@ -251,9 +263,9 @@ $string-substring-exp -> :3 +[
 	$block-space.? "]"
 ]
 $substring-args-exp -> :2 +[
-	$numeric-exp
-	$block-space.? ","
-	$block-space.? $numeric-exp
+	$index-exp
+	$block-space.? ".."
+	$block-space.? $index-exp
 ]
 
 
@@ -264,12 +276,21 @@ $substring-args-exp -> :2 +[
 $character-exp -> ?[
 	$character-constant-exp
 	$attribute-scalar-access-exp
+	+[
+		"(" $block-space.?
+		$character-exp
+		$block-space.? ")"
+	]
 ]
-$character-constant-exp -> @DelimitedString{
-	start: '\'',
-	ranges: '^\n, ^\r',
-	escaped-delimiter: '\\\x27'
-}
+$character-constant-exp -> +[
+	"'" ?[
+		"\0" "\a" "\b" "\f" "\n" "\r" "\t" "\v" "\'"
+		+[ "\x" /^[a-fA-F0-9]{2}$/{ match-type: '2'} ]
+		+[ "\u" /^[a-fA-F0-9]{4}$/{ match-type: '4'} ]
+		/^.$/
+	]
+	"'"
+]
 
 
 
@@ -278,6 +299,11 @@ $character-constant-exp -> @DelimitedString{
 $timestamp-exp -> ?[
 	$timestamp-constant-exp
 	$attribute-scalar-access-exp
+	+[
+		"(" $block-space.?
+		$timestamp-exp
+		$block-space.? ")"
+	]
 ]
 $timestamp-constant-exp -> +[
 	"'T"
@@ -311,19 +337,19 @@ $timezone-component -> +[
 ]
 $tick-component -> +[
 	"."
-	/\d/{
+	/^\d+$/{
 		match-type:'1, 7'
 	}
 ]
 $second-component -> +[
 	":"
-	/[0-5]\d/{
+	/^[0-5]\d$/{
 		match-type:'2'
 	}
 ]
 $minute-component -> +[
 	":"
-	/[0-5]\d/{
+	/^[0-5]\d$/{
 		match-type:'2'
 	}
 ]
@@ -347,7 +373,7 @@ $month-component -> +[
 ]
 $year-component -> +[
 	" "
-	/\d+/{
+	/^\d+$/{
 		match-type:'1,+'
 	}
 ]
@@ -359,24 +385,33 @@ $year-component -> +[
 $duration-exp -> ?[
 	$duration-constant-exp
 	$attribute-scalar-access-exp
+	+[
+		"(" $block-space.?
+		$duration-exp
+		$block-space.? ")"
+	]
 ]
 $duration-constant-exp -> +[
-	"'D "
+	"'D " "-".?
 	$dday-component.?
-	$hour-component +[
+	$dhour-component +[
 		$minute-component +[
-			$second-component +[
-				$tick-component
-			].?
+			$second-component
+			$tick-component.?
 		].?
 	].?
 	"'"
 ]
-$dday-component -> +[
-	/\d+/{
+$dday-component -> +[	
+	/^\d+$/{
 		match-type:'1,+'
 	}
 	"."
+]
+$dhour-component -> +[
+	/(00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23)/{
+		match-type:'2'
+	}
 ]
 
 
@@ -415,7 +450,7 @@ $numeric-constant-value -> ?[
 $integer-constant-value -> +[
 	"-".?
 	/^\d+$/
-	?["i" "I"]
+	'i, I'
 ]
 $real-constant-value -> +[
 	# integral part
@@ -462,29 +497,33 @@ $global-ref-exp -> ?[
 	"@intent"
 	"@environment"
 ]
+$attributed-global-ref-exp -> ?[
+	"@subject"
+	"@resource"
+	"@environment"
+]
 $attribute-scalar-access-exp -> :2 +[
-	$global-ref-exp
-	?[
-		+["." $attribute-identifier]
-		+[".'" $attribute-name "'"]
+	$attributed-global-ref-exp +[ 
+		"." ?[
+			$attribute-identifier
+			$attribute-name
+		]
 	].+
 ]
 $attribute-set-access-exp -> :2 +[
-	$global-ref-exp
-	"["
-	?[
-		$attribute-identifier
+	$global-ref-exp "[" ?[
 		$attribute-name
-	]
-	"]"
+		$attribute-identifier
+	] "]"
 ]
 $attribute-identifier -> /^[a-zA-Z]([a-zA-Z0-9-_])*$/{
 	match-type: '1,+'
 }
 $attribute-name -> @DelimitedString{
 	start: '\'',
+	end: '\'',
 	ranges: '^\n, ^\r',
-	escaped-delimiter: '\\\x27'
+	escaped-delimiter: '\\''
 }
 
 
