@@ -2,7 +2,6 @@
 using Axis.Sigma.Policy.Control;
 using Axis.Sigma.Policy.DataAccess;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -41,10 +40,14 @@ namespace Axis.Sigma.Policy
 
         public Policy(
             Guid id,
+            PolicyStatus status,
             IEnumerable<AttributeTarget> target,
-            Func<AccessContext, Effect> rule)
+            Func<AccessContext, Effect> rule,
+            DateTimeOffset? validUntil = null)
         {
             _id = id;
+            _status = status;
+            _validUntil = validUntil;
 
             _rule = rule.ThrowIfNull(
                 () => throw new ArgumentNullException(nameof(rule)));

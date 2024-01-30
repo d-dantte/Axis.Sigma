@@ -12,14 +12,25 @@ $spree -> +[
 
 
 # Boolean Expression
-$boolean-exp -> ?[
+$boolean-exp -> +[
+	$boolean-exp2 +[
+		$block-space
+		$boolean-binary-operator
+		$block-space
+		$boolean-exp
+	].*
+]
+$boolean-binary-operator -> ?[
+	"and" "or" "xor"
+	"is equal to" "=" 
+	"is ot equal to" "!="
+]
+$boolean-exp2 -> ?[
 	$relational-exp
 	$equality-exp
-	$conditional-exp
 	$boolean-unary-exp
 	$boolean-value-exp
 ]
-
 
 
 
@@ -28,13 +39,15 @@ $relational-exp -> ?[
 	$relational-set-exp
 	$relational-scalar-exp
 ]
-$relational-set-exp -> :3 +[
+$relational-set-exp -> ?[
 	+[$set-exp $block-space "in" $block-space $set-exp]
 	+[$scalar-exp $block-space "in" $block-space $set-exp]
 	+[$set-exp $block-space "contains" $block-space $scalar-exp]
+	+[$set-exp $block-space "contains" $block-space $set-exp]
 ]
 $relational-scalar-exp -> ?[
 	$numeric-relational-exp
+	$character-relational-exp
 	$string-relational-exp
 	$timestamp-relational-exp
 	$duration-relational-exp
@@ -43,6 +56,11 @@ $numeric-relational-exp -> :3 +[
 	$numeric-exp
 	$block-space $relational-scalar-operator
 	$block-space $numeric-exp
+]
+$character-relational-exp -> :3 +[
+	$character-exp
+	$block-space $relational-scalar-operator
+	$block-space $character-exp
 ]
 $string-relational-exp -> :3 +[
 	$string-exp
@@ -60,18 +78,17 @@ $duration-relational-exp -> :3 +[
 	$block-space $duration-exp
 ]
 $relational-scalar-operator -> ?[
-	">" ">="
-	"<" "<="
+	">=" ">"
+	"<=" "<"
 ]
-
 
 
 
 # Equality Expression
 $equality-exp -> ?[
 	$set-equality-exp
-	$boolean-equality-exp
 	$numeric-equality-exp
+	$character-equality-exp
 	$string-equality-exp
 	$timestamp-equality-exp
 	$duration-equality-exp
@@ -93,16 +110,15 @@ $set-equality-exp -> :3 +[
 	$block-space $equality-operator
 	$block-space $set-exp
 ]
-$boolean-equality-exp -> :3 +[
-	?[$relational-exp $conditional-exp $boolean-unary-exp $boolean-value-exp]	
-	#$boolean-value-exp
-	$block-space $equality-operator
-	$block-space $boolean-exp
-]
 $numeric-equality-exp -> :3 +[
 	$numeric-exp
 	$block-space $equality-operator
 	$block-space $numeric-exp
+]
+$character-equality-exp -> :3 +[
+	$character-exp
+	$block-space $equality-operator
+	$block-space $character-exp
 ]
 $string-equality-exp -> :3 +[
 	$string-exp
@@ -119,20 +135,6 @@ $duration-equality-exp -> :3 +[
 	$block-space $equality-operator
 	$block-space $duration-exp
 ]
-
-
-
-# Conditional Expression
-$conditional-exp -> :3 +[
-	?[$relational-exp $equality-exp $boolean-unary-exp $boolean-value-exp]
-	$block-space $conditional-operator
-	$block-space $boolean-exp
-]
-$conditional-operator -> ?[
-	"and"
-	"or"
-]
-
 
 
 
@@ -167,7 +169,6 @@ $empty-exp -> +[
 
 
 
-
 # Boolean Value Expression
 $boolean-value-exp -> ?[
 	$boolean-constant-value
@@ -185,7 +186,6 @@ $boolean-constant-value -> ?[
 
 
 
-
 # Scalar Expression
 $scalar-exp -> ?[
 	$string-exp
@@ -195,6 +195,8 @@ $scalar-exp -> ?[
 	$character-exp
 	$numeric-exp
 ]
+
+
 
 #Set Expression
 $set-exp -> ?[
@@ -220,7 +222,6 @@ $items-exp -> :3 +[
 	+[$block-space.? "," $block-space $scalar-exp].+
 	$block-space.? "]"
 ]
-
 
 
 
@@ -270,8 +271,6 @@ $substring-args-exp -> :2 +[
 
 
 
-
-
 # Character Expression
 $character-exp -> ?[
 	$character-constant-exp
@@ -291,7 +290,6 @@ $character-constant-exp -> +[
 	]
 	"'"
 ]
-
 
 
 
@@ -377,7 +375,6 @@ $year-component -> +[
 		match-type:'1,+'
 	}
 ]
-
 
 
 
@@ -486,7 +483,6 @@ $decimal-constant-value -> +[
 	# suffix
 	'd, D'
 ]
-
 
 
 

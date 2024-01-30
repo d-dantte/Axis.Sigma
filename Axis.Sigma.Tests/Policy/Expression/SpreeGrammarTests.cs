@@ -11,7 +11,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Axis.Sigma.Tests.Policy.Expression
 {
@@ -1538,41 +1537,11 @@ namespace Axis.Sigma.Tests.Policy.Expression
             Assert.AreEqual($"false", node.Tokens.ToString());
         }
 
-        [TestMethod]
-        public void Conditional_Tests()
-        {
-            var recognizer = SpreeContext.Grammar.GetProduction("boolean-exp");
-            var success = false;
-            var result = default(NodeRecognitionResult);
-            var node = default(ICSTNode);
-
-            success = recognizer.TryRecognize(
-                $"true",
-                "root",
-                SpreeContext,
-                out result);
-            Assert.IsTrue(success);
-            Assert.IsTrue(result.Is(out node));
-            Assert.AreEqual($"true", node.Tokens.ToString());
-
-            success = recognizer.TryRecognize(
-                $"@subject.stuff and @subject.otherStuff",
-                "root",
-                SpreeContext,
-                out result);
-            Assert.IsTrue(success);
-            Assert.IsTrue(result.Is(out node));
-            Assert.AreEqual($"true", node.Tokens.ToString());
-
-
-        }
-
-
 
         [TestMethod]
         public void BooleanValueExp_Tests()
         {
-            var recognizer = SpreeContext.Grammar.GetProduction("boolean-constant-value");
+            var recognizer = SpreeContext.Grammar.GetProduction("boolean-value-exp");
             var success = false;
             var result = default(NodeRecognitionResult);
             var node = default(ICSTNode);
@@ -1684,6 +1653,274 @@ namespace Axis.Sigma.Tests.Policy.Expression
             Assert.IsTrue(success);
             Assert.IsTrue(result.Is(out node));
             Assert.AreEqual($"not @subject.stuff", node.Tokens.ToString());
+        }
+
+        [TestMethod]
+        public void EqualityExpression_Test()
+        {
+            var recognizer = SpreeContext.Grammar.GetProduction("equality-exp");
+            var success = false;
+            var result = default(NodeRecognitionResult);
+            var node = default(ICSTNode);
+
+            #region Duration
+            success = recognizer.TryRecognize(
+                $"'D 1.22:01' = 'D 1.22:01:32'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'D 1.22:01' = 'D 1.22:01:32'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'D 1.22:01' is equal to 12i",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Timestamp
+            success = recognizer.TryRecognize(
+                $"'T 1992' is not equal to 'T 1989'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'T 1992' is not equal to 'T 1989'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'T 1992' != to 12.3E+3r",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region String
+            success = recognizer.TryRecognize(
+                $"\"bleh\" is not equal to \"sleh\"",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"\"bleh\" is not equal to \"sleh\"", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"\"bleh\" = false",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Character
+            success = recognizer.TryRecognize(
+                $"'\\x0c' = '\\u000c'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'\\x0c' = '\\u000c'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'\\x0c' = 'T 2023'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Numeric
+            success = recognizer.TryRecognize(
+                $"(6i * 6i) = 36.0d",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"(6i * 6i) = 36.0d", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"-12.0021D is not equal to 'r'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Set
+            success = recognizer.TryRecognize(
+                $"@subject[years] = ['T 2021', 'T 2020', 'T 2019']",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"@subject[years] = ['T 2021', 'T 2020', 'T 2019']", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"@subject[years] is not equal to false",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+        }
+
+        [TestMethod]
+        public void RelationalExpression_Tests()
+        {
+            var recognizer = SpreeContext.Grammar.GetProduction("relational-exp");
+            var success = false;
+            var result = default(NodeRecognitionResult);
+            var node = default(ICSTNode);
+
+            #region Duration
+            success = recognizer.TryRecognize(
+                $"'D 1.22:01' > 'D 1.22:01:32'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'D 1.22:01' > 'D 1.22:01:32'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'D 1.22:01' > 12i",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Timestamp
+            success = recognizer.TryRecognize(
+                $"'T 1992' < 'T 1989'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'T 1992' < 'T 1989'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'T 1992' <to 12.3E+3r",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region String
+            success = recognizer.TryRecognize(
+                $"\"bleh\" <= \"sleh\"",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"\"bleh\" <= \"sleh\"", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"\"bleh\" >= false",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Character
+            success = recognizer.TryRecognize(
+                $"'\\x0c' <= '\\u000c'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'\\x0c' <= '\\u000c'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'\\x0c' <= 'T 2023'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Numeric
+            success = recognizer.TryRecognize(
+                $"(6i * 6i) >= 36.0d",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"(6i * 6i) >= 36.0d", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"-12.0021D >= 'r'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
+
+            #region Set
+            success = recognizer.TryRecognize(
+                $"@subject[years] in ['T 2021', 'T 2020', 'T 2019']",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"@subject[years] in ['T 2021', 'T 2020', 'T 2019']", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"'T 2021' in ['T 2021', 'T 2020', 'T 2019']",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'T 2021' in ['T 2021', 'T 2020', 'T 2019']", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"@subject[years] in false",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+
+            success = recognizer.TryRecognize(
+                $"@subject[years] contains ['T 2021', 'T 2020', 'T 2019']",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"@subject[years] contains ['T 2021', 'T 2020', 'T 2019']", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"@subject[Ids] contains 43i",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"@subject[Ids] contains 43i", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"@subject[years] contains false",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsFalse(success);
+            #endregion
         }
 
         #endregion
