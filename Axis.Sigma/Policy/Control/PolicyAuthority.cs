@@ -1,4 +1,4 @@
-﻿using Axis.Sigma.Policy.DataAccess;
+﻿using Axis.Sigma.Policy.Repository;
 using Axis.Sigma.Utils;
 using System;
 using System.Linq;

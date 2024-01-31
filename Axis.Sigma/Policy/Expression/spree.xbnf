@@ -6,6 +6,7 @@
 # SPREE
 $spree -> +[
 	$boolean-exp
+	$block-space.?
 	@EOF
 ]
 

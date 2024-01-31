@@ -1,4 +1,4 @@
-﻿namespace Axis.Sigma.Policy.DataAccess
+﻿namespace Axis.Sigma.Policy
 {
     /// <summary>
     /// Policy status

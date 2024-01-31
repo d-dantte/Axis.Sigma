@@ -1,8 +1,7 @@
-﻿using Axis.Sigma.Policy.Control;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Axis.Sigma.Policy.DataAccess
+namespace Axis.Sigma.Policy.Repository
 {
     /// <summary>
     /// Represents the contract for retrieving policies.
@@ -15,8 +14,8 @@ namespace Axis.Sigma.Policy.DataAccess
         /// <summary>
         /// Gets all <see cref="PolicyStatus.Active"/> policies for the given policy target attributes
         /// </summary>
-        /// <param name="policyTarget">The policy target attributes</param>
-        /// <returns>A sequence of zero or more policies that apply to the given resource</returns>
-        Task<IEnumerable<Policy>> GetApplicablePolicies(AccessContext accessContext);
+        /// <param name="policyFamilies">the policy families to retrieve</param>
+        /// <returns>A sequence of zero or more policies, grouped by the given policy families</returns>
+        Task<IDictionary<string, IEnumerable<Policy>>> GetApplicablePolicies(string[] policyFamilies);
     }
 }

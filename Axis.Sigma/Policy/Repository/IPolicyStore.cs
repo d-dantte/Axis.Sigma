@@ -1,5 +1,4 @@
-﻿using Axis.Sigma.Policy.DataAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,16 +20,16 @@ namespace Axis.Sigma.Policy.Data
         /// Retrieves all <see cref="PolicyStatus.Active"/> policies for the given
         /// resource
         /// </summary>
-        /// <param name="resourceId">The target resource id.</param>
+        /// <param name="policyFamily">The family of the policies to retrieve.</param>
         /// <returns>The policy collection for the given resource</returns>
-        Task<IEnumerable<PolicyDescriptor>> GetResourcePolicies(string resourceId);
+        Task<IEnumerable<PolicyDescriptor>> GetPolicies(string policyFamily);
 
         /// <summary>
         /// Retrieves all policies for the given resource.
         /// </summary>
-        /// <param name="resourceId">The target resource id.</param>
+        /// <param name="policyFamily">The family of the policies to retrieve.</param>
         /// <returns>The policy collection for the given resource</returns>
-        Task<IEnumerable<PolicyDescriptor>> GetAllResourcePolicies(string resourceId);
+        Task<IEnumerable<PolicyDescriptor>> GetAllPolicies(string policyFamily);
 
         /// <summary>
         /// Retrieves the policy with the given id

@@ -1923,6 +1923,71 @@ namespace Axis.Sigma.Tests.Policy.Expression
             #endregion
         }
 
+        [TestMethod]
+        public void BooleanExp_Tests()
+        {
+            var recognizer = SpreeContext.Grammar.GetProduction("boolean-exp");
+            var success = false;
+            var result = default(NodeRecognitionResult);
+            var node = default(ICSTNode);
+
+            success = recognizer.TryRecognize(
+                $"'D 1.22:01' > 'D 1.22:01:32'",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"'D 1.22:01' > 'D 1.22:01:32'", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"not @subject.something ",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"not @subject.something", node.Tokens.ToString());
+        }
+
+        [TestMethod]
+        public void Spree_Tests()
+        {
+            var recognizer = SpreeContext.Grammar.GetProduction("spree");
+            var success = false;
+            var result = default(NodeRecognitionResult);
+            var node = default(ICSTNode);
+
+            success = recognizer.TryRecognize(
+                $"4i * 5i = 20i",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"4i * 5i = 20i", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"@subject.stuff + @subject.otherStuff = 20i",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"@subject.stuff + @subject.otherStuff = 20i", node.Tokens.ToString());
+
+            success = recognizer.TryRecognize(
+                $"not @subject.something ",
+                "root",
+                SpreeContext,
+                out result);
+            Assert.IsTrue(success);
+            Assert.IsTrue(result.Is(out node));
+            Assert.AreEqual($"not @subject.something ", node.Tokens.ToString());
+
+
+        }
+
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Immutable;
 
-namespace Axis.Sigma.Policy.DataAccess
+namespace Axis.Sigma.Policy
 {
     public class PolicyDescriptor
     {
@@ -22,7 +23,7 @@ namespace Axis.Sigma.Policy.DataAccess
         /// <summary>
         /// A comma separated list of string representation of <see cref="AttributeTarget"/> instances, arranged in ascending order.
         /// </summary>
-        public string? Targets { get; set; }
+        public ImmutableArray<AttributeTarget> Targets { get; set; }
 
         /// <summary>
         /// 
@@ -49,11 +50,16 @@ namespace Axis.Sigma.Policy.DataAccess
         /// </summary>
         public DateTimeOffset UpdatedOn { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string? PolicyFamily { get; set; }
+
 
         /// <summary>
         /// Validates that the target property contains only attributes defined/expressed in the rule expression.
         /// </summary>
-        public void ValidateTargets()
+        public bool TryValidateTargets(out TargetValidationException error)
         {
 
         }

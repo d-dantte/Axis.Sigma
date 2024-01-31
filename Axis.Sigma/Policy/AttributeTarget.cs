@@ -1,4 +1,5 @@
 ﻿using Axis.Luna.Common;
+using Axis.Luna.Common.Results;
 using Axis.Luna.Extensions;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ namespace Axis.Sigma.Policy
 {
     public readonly struct AttributeTarget:
         IEquatable<AttributeTarget>,
-        IDefaultValueProvider<AttributeCategory>
+        IDefaultValueProvider<AttributeCategory>,
+        IResultParsable<AttributeTarget>
     {
         private readonly AttributeCategory _category;
         private readonly string _name;
@@ -72,5 +74,17 @@ namespace Axis.Sigma.Policy
 
             return _name;
         }
+
+        #region Result Parsable
+        public static bool TryParse(string text, out IResult<AttributeTarget> result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IResult<AttributeTarget> Parse(string text)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
