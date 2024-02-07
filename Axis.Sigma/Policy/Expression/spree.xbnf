@@ -173,7 +173,7 @@ $empty-exp -> +[
 # Boolean Value Expression
 $boolean-value-exp -> ?[
 	$boolean-constant-value
-	$attribute-scalar-access-exp
+	+["b:".? $attribute-scalar-access-exp]
 	+[
 		"(" $block-space.?
 		?[$boolean-exp]
@@ -234,7 +234,7 @@ $string-exp -> ?[
 ]
 $string-value-exp -> ?[
 	$string-constant-exp
-	$attribute-scalar-access-exp
+	+["s:".? $attribute-scalar-access-exp]
 	$global-ref-exp
 	+[
 		"(" $block-space.?
@@ -275,7 +275,7 @@ $substring-args-exp -> :2 +[
 # Character Expression
 $character-exp -> ?[
 	$character-constant-exp
-	$attribute-scalar-access-exp
+	+["c:".? $attribute-scalar-access-exp]
 	+[
 		"(" $block-space.?
 		$character-exp
@@ -297,7 +297,7 @@ $character-constant-exp -> +[
 # Timestamp Expression 'yyyy-MM-dd HH:mm:ss.fffffff zzz'
 $timestamp-exp -> ?[
 	$timestamp-constant-exp
-	$attribute-scalar-access-exp
+	+["t:".? $attribute-scalar-access-exp]
 	+[
 		"(" $block-space.?
 		$timestamp-exp
@@ -382,7 +382,7 @@ $year-component -> +[
 # Duration Expression
 $duration-exp -> ?[
 	$duration-constant-exp
-	$attribute-scalar-access-exp
+	+["d:".? $attribute-scalar-access-exp]
 	+[
 		"(" $block-space.?
 		$duration-exp
@@ -424,8 +424,8 @@ $numeric-exp -> +[
 	].*
 ]
 $numeric-operator -> ?[
-	"^"
-	"<<" ">>"
+	#"^"
+	#"<<" ">>"
 	"*" "/" "%"
 	"+" "-"
 ]
@@ -433,7 +433,7 @@ $numeric-operator -> ?[
 # Numeric value
 $numeric-value-exp -> ?[
 	$numeric-constant-value
-	$attribute-scalar-access-exp
+	+["n:".? $attribute-scalar-access-exp]
 	+[
 		"(" $block-space.?
 		$numeric-exp

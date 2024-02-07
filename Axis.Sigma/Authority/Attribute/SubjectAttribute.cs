@@ -36,6 +36,12 @@ namespace Axis.Sigma.Authority.Attribute
             ValidUntil = validUntil;
         }
 
+        public static SubjectAttribute Of(
+            string name,
+            IAttributeValue value,
+            DateTimeOffset? validUntil = null)
+            => new(name, value, validUntil);
+
         public override string ToString()
         {
             var value = !IsDefault

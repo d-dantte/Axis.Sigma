@@ -90,13 +90,42 @@ namespace Axis.Sigma.Utils
             {
                 // note that if the status is not TaskStatus.RanToCompletion, the appropriate exception
                 // is thrown
-                TaskStatus.RanToCompletion 
+                TaskStatus.RanToCompletion
                 or TaskStatus.Canceled
                 or TaskStatus.Faulted => mapper.Invoke(t.Result),
 
                 _ => throw new InvalidOperationException(
                     $"Invalid antecedent task status: {t.Status}")
             });
+        }
+
+        internal static Task<TOut> Map<TIn, TOut>(this
+            Task<TIn> task,
+            Func<TIn, Task<TOut>> mapper)
+        {
+            ArgumentNullException.ThrowIfNull(task);
+            ArgumentNullException.ThrowIfNull(mapper);
+
+            return task
+                .ContinueWith(t => t.Status switch
+                {
+                    // note that if the status is not TaskStatus.RanToCompletion, the appropriate exception
+                    // is thrown
+                    TaskStatus.RanToCompletion
+                    or TaskStatus.Canceled
+                    or TaskStatus.Faulted => mapper.Invoke(t.Result),
+
+                    _ => throw new InvalidOperationException(
+                        $"Invalid antecedent task status: {t.Status}")
+                })
+                .Unwrap();
+        }
+
+        internal static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> sequenceOfSequence)
+        {
+            ArgumentNullException.ThrowIfNull(sequenceOfSequence);
+
+            return sequenceOfSequence.SelectMany(t => t);
         }
 
         internal static Effect Combine(this IEnumerable<Effect> effects)

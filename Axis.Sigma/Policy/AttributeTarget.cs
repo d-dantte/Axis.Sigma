@@ -78,12 +78,23 @@ namespace Axis.Sigma.Policy
         #region Result Parsable
         public static bool TryParse(string text, out IResult<AttributeTarget> result)
         {
-            throw new NotImplementedException();
+            result = Parse(text);
+            return result.IsDataResult();
         }
 
         public static IResult<AttributeTarget> Parse(string text)
         {
-            throw new NotImplementedException();
+            ArgumentException.ThrowIfNullOrEmpty(text);
+
+            var parts = text.Split(':');
+
+            if (parts.Length != 2)
+                return Result.Of<AttributeTarget>(new FormatException(
+                    $"Invalid format: '{text}'"));
+
+            return Result
+                .Of(() => parts[0].CategoryValue())
+                .Map(cat => new AttributeTarget(cat, parts[1]));
         }
         #endregion
     }

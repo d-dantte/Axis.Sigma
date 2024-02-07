@@ -40,6 +40,13 @@ namespace Axis.Sigma.Policy.Control
             Environment = environment;
         }
 
+        public static AccessContext Of(
+            Subject subject,
+            Resource resource,
+            Intent intent,
+            Authority.Environment environment)
+            => new(subject, resource, intent, environment);
+
         public bool Equals(
             AccessContext other)
             => Subject.Equals(other.Subject)

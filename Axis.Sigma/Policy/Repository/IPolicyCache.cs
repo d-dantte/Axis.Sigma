@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 namespace Axis.Sigma.Policy.Repository
@@ -16,6 +17,6 @@ namespace Axis.Sigma.Policy.Repository
         /// </summary>
         /// <param name="policyFamilies">the policy families to retrieve</param>
         /// <returns>A sequence of zero or more policies, grouped by the given policy families</returns>
-        Task<IDictionary<string, IEnumerable<Policy>>> GetApplicablePolicies(string[] policyFamilies);
+        Task<IDictionary<PolicyFamily, IEnumerable<Policy>>> GetApplicablePolicies(ImmutableArray<PolicyFamily> policyFamilies);
     }
 }

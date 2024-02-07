@@ -438,13 +438,13 @@ namespace Axis.Sigma.Tests.Policy.Expression
 
 
             success = recognizer.TryRecognize(
-                "4i * 4.5r + (@subject.Value / @resource.SpecCount)",
+                "4i * 4.5r + (I:@subject.Value / @resource.SpecCount)",
                 "root",
                 SpreeContext,
                 out result);
             Assert.IsTrue(success);
             Assert.IsTrue(result.Is(out node));
-            Assert.AreEqual("4i * 4.5r + (@subject.Value / @resource.SpecCount)", node.Tokens.ToString());
+            Assert.AreEqual("4i * 4.5r + (I:@subject.Value / @resource.SpecCount)", node.Tokens.ToString());
         }
 
         #endregion

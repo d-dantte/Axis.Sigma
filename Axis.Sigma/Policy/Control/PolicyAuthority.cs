@@ -9,6 +9,7 @@ namespace Axis.Sigma.Policy.Control
     public class PolicyAuthority : IPolicyAuthority
     {
         private readonly IPolicyCache _policyCache;
+        private readonly IPolicyFamilyEvaluator _policyFamilyEvaluator;
         private readonly Effect _implicitEffect;
 
 
@@ -16,20 +17,28 @@ namespace Axis.Sigma.Policy.Control
 
         public PolicyAuthority(
             Effect implicitEffect,
-            IPolicyCache policyCache)
+            IPolicyCache policyCache,
+            IPolicyFamilyEvaluator policyFamilyEvaluator)
         {
             ArgumentNullException.ThrowIfNull(policyCache);
+            ArgumentNullException.ThrowIfNull(policyFamilyEvaluator);
 
             _policyCache = policyCache;
+            _policyFamilyEvaluator = policyFamilyEvaluator;
             _implicitEffect = implicitEffect;
         }
 
         public Task<Effect> Authorize(
             AccessContext context)
-            => _policyCache
-                .GetApplicablePolicies(context)
-                .Map(policies => policies
+        {
+            return _policyFamilyEvaluator
+                .EvalutateFamilies(context)
+                .Map(_policyCache.GetApplicablePolicies)
+                .Map(policies => policies.Values
+                    .SelectMany()
+                    .Where(policy => policy.AppliesTo(context))
                     .Select(policy => policy.Enforce(context))
                     .Combine());
+        }
     }
 }

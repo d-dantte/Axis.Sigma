@@ -27,6 +27,8 @@ namespace Axis.Sigma.Authority
                     $"Invalid {nameof(id)}: null/empty/whitespace"));
         }
 
+        public static Intent Of(string id) => new(id);
+
         public bool Equals(
             Intent other)
             => EqualityComparer<string>.Default.Equals(Id, other.Id);

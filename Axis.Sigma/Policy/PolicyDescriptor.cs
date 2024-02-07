@@ -3,6 +3,9 @@ using System.Collections.Immutable;
 
 namespace Axis.Sigma.Policy
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PolicyDescriptor
     {
         /// <summary>
@@ -53,7 +56,7 @@ namespace Axis.Sigma.Policy
         /// <summary>
         /// 
         /// </summary>
-        public string? PolicyFamily { get; set; }
+        public PolicyFamily PolicyFamily { get; set; }
 
 
         /// <summary>
@@ -61,7 +64,7 @@ namespace Axis.Sigma.Policy
         /// </summary>
         public bool TryValidateTargets(out TargetValidationException error)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

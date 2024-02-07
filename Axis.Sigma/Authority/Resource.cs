@@ -1,4 +1,5 @@
 ﻿using Axis.Luna.Common;
+using Axis.Luna.Common.Utils;
 using Axis.Luna.Extensions;
 using Axis.Sigma.Authority.Attribute;
 using Axis.Sigma.Utils;
@@ -6,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+using static Axis.Luna.Extensions.EnumerableExtensions;
 
 namespace Axis.Sigma.Authority
 {
@@ -17,7 +21,21 @@ namespace Axis.Sigma.Authority
         IEquatable<Resource>,
         IDefaultValueProvider<Resource>
     {
-        public ImmutableArray<IAttribute> Attributes { get; }
+        private readonly Dictionary<string, ImmutableArray<IAttribute>> _attributes;
+
+        public ImmutableArray<IAttribute> Attributes => _attributes.Values
+            .SelectMany(t => t)
+            .ToImmutableArray();
+
+        public IReadonlyIndexer<string, IAttribute?> Attribute
+            => AttributeAccessor
+            .Of(_attributes);
+
+        public IReadonlyIndexer<string, ImmutableArray<IAttribute>> AttributeGroup
+            => AttributeGroupAccessor
+            .Of(_attributes);
+
+        public bool ContainsAttribute(string name) => _attributes.ContainsKey(name);
 
         public string Id { get; }
 
@@ -36,15 +54,24 @@ namespace Axis.Sigma.Authority
                 _ => new ArgumentException(
                     $"Invalid {nameof(id)}: null/empty/whitespace"));
 
-            Attributes = attributes
+            _attributes = attributes
                 .ThrowIfNull(() => new ArgumentNullException(nameof(attributes)))
                 .ThrowIfAny(
                     att => att.IsDefault,
                     _ => new ArgumentException(
                         $"Invalid {nameof(attributes)}: contains invalid items"))
                 .SelectAs<IAttribute>()
-                .ToImmutableArray();
+                .GroupBy(att => att.Name)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.ToImmutableArray());
         }
+
+        public static Resource Of(
+            string id,
+            params ResourceAttribute[] attributes)
+            => new(id, attributes);
+
 
         public bool Equals(
             Resource other)

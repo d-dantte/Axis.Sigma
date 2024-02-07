@@ -1,114 +1,41 @@
-﻿using Axis.Luna.Common.Numerics;
-using System;
-using System.Collections.Immutable;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 
 namespace Axis.Sigma.Authority.Attribute
 {
     public interface IAttributeValue
     {
         #region Of
-        public static IAttributeValue Of(long value) => new IntValue(value);
+        public static IAttributeValue Of(char value) => new CharValue(value);
 
-        public static IAttributeValue Of(ulong value) => new BigIntValue(value);
-
-        public static IAttributeValue Of(BigInteger value) => new BigIntValue(value);
-
-        public static IAttributeValue Of(double value) => new RealValue(value);
-
-        public static IAttributeValue Of(decimal value) => new DecimalValue(value);
-
-        public static IAttributeValue Of(BigDecimal value) => new BigDecimalValue(value);
+        public static IAttributeValue Of(SigmaNumber value) => new NumberValue(value);
 
         public static IAttributeValue Of(bool value) => new BooleanValue(value);
 
         public static IAttributeValue Of(string value) => new StringValue(value);
+
+        public static IAttributeValue Of(TimeSpan value) => new DurationValue(value);
+
+        public static IAttributeValue Of(DateTimeOffset value) => new TimestampValue(value);
         #endregion
 
         #region Value Types
 
-        #region Numeric
-        public readonly struct IntValue : IAttributeValue<long>
+        public readonly struct NumberValue : IAttributeValue<SigmaNumber>
         {
-            private readonly long _value;
+            private readonly SigmaNumber _value;
 
-            public long Payload => _value;
+            public SigmaNumber Payload => _value;
 
-            public IntValue(long value)
+            public NumberValue(SigmaNumber value)
             {
                 _value = value;
             }
 
             public override string ToString() => _value.ToString();
 
-            public static implicit operator IntValue(long value) => new(value);
+            public static implicit operator NumberValue(SigmaNumber value) => new(value);
         }
-
-        public readonly struct BigIntValue : IAttributeValue<BigInteger>
-        {
-            private readonly BigInteger _value;
-
-            public BigInteger Payload => _value;
-
-            public BigIntValue(BigInteger value)
-            {
-                _value = value;
-            }
-
-            public override string ToString() => _value.ToString();
-
-            public static implicit operator BigIntValue(BigInteger value) => new(value);
-        }
-
-        public readonly struct RealValue : IAttributeValue<double>
-        {
-            private readonly double _value;
-
-            public double Payload => _value;
-
-            public RealValue(double value)
-            {
-                _value = value;
-            }
-
-            public override string ToString() => _value.ToString();
-
-            public static implicit operator RealValue(double value) => new(value);
-        }
-
-        public readonly struct DecimalValue : IAttributeValue<decimal>
-        {
-            private readonly decimal _value;
-
-            public decimal Payload => _value;
-
-            public DecimalValue(decimal value)
-            {
-                _value = value;
-            }
-
-            public override string ToString() => _value.ToString();
-
-            public static implicit operator DecimalValue(decimal value) => new(value);
-        }
-
-        public readonly struct BigDecimalValue : IAttributeValue<BigDecimal>
-        {
-            private readonly BigDecimal _value;
-
-            public BigDecimal Payload => _value;
-
-            public BigDecimalValue(BigDecimal value)
-            {
-                _value = value;
-            }
-
-            public override string ToString() => _value.ToString();
-
-            public static implicit operator BigDecimalValue(BigDecimal value) => new(value);
-        }
-        #endregion
 
         /// <summary>
         /// boolean
@@ -127,6 +54,25 @@ namespace Axis.Sigma.Authority.Attribute
             public override string ToString() => _value.ToString();
 
             public static implicit operator BooleanValue(bool value) => new(value);
+        }
+
+        /// <summary>
+        /// character
+        /// </summary>
+        public readonly struct CharValue : IAttributeValue<char>
+        {
+            private readonly char _value;
+
+            public char Payload => _value;
+
+            public CharValue(char value)
+            {
+                _value = value;
+            }
+
+            public override string ToString() => _value.ToString();
+
+            public static implicit operator CharValue(char value) => new(value);
         }
 
         /// <summary>
